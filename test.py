@@ -35,12 +35,14 @@ def load_valid_data(dir_name):
     image_ids = np.random.choice(np.arange(0, dataset_size), dataset_size, replace=False)
 
     rgb_data = np.zeros((dataset_size, IMAGE_HEIGHT, IMAGE_WIDTH, 3))
-
+    image_name = []
+    
     for i, img_id in enumerate(image_ids):
         I_rgb = imageio.imread(dir_name + image_list[img_id])
         rgb_data[i] = np.reshape(I_rgb, [IMAGE_HEIGHT, IMAGE_WIDTH, 3])
+        image_name.append(image_list[img_id])
 
-    return rgb_data, image_ids
+    return rgb_data, image_name
 
 #train_data, train_targets, val_data, val_targets = load_data(TRAIN_DIR, NUM_TRAIN_IMAGES)
 #%%
@@ -100,4 +102,4 @@ with tf.compat.v1.Graph().as_default(), tf.compat.v1.Session() as sess:
         i = 0
         for image in visual_results:
             predicted_image = np.asarray(np.reshape(image, [IMAGE_HEIGHT, IMAGE_WIDTH, DEPTH_CHANNELS]), dtype=np.uint16)
-            imageio.imsave("results/" + str(imageID[i]) + ".png", predicted_image)
+            imageio.imsave("results/" + imageID[i], predicted_image)
